@@ -1,0 +1,85 @@
+<html>
+<head>
+<style>
+#ct p{
+	font-size: 40px;
+	font-weight: bold;
+	width: 100%;
+}
+#ct div div {
+	margin-left: 10px;
+}
+#ct div span, #ct div p{
+	font-size: 25px;
+	margin: 8px 0px 8px 0px;
+	font-weight: normal;
+	padding: 5px;
+	display: block;
+}
+#ct div p:hover {
+	cursor: pointer;
+	background-color: lightblue;
+}
+</style>
+<script>
+var contacts = [
+    {
+        id:1,
+        name: "Friends",
+        type: "Group",
+        contacts: [
+            {id:2, name: "Udi", type: "Contact"},
+            {id:3, name: "Tommy", type: "Contact"},
+            {
+                id:6,
+                name: "Old Friends",
+                type: "Group",
+                contacts: [
+                    {id:7, name: "Itay", type: "Contact"},
+                ]
+            },
+        ]
+    },
+    {
+        id:4,
+        name: "Family",
+        type: "Group",
+        contacts: [
+            {id:5, name: "Roni", type: "Contact"},
+        ]
+    },
+    {id: 8, name: "Ori", type: "Contact"},
+];
+
+function toggleContacts(contacts, id) {
+	var context = document.getElementById(id);
+	var pft = "contacts";
+	if(context.firstChild.title) {
+		pft = context.firstChild.title;
+	}
+	if(context.childNodes.length == 1) { //expand
+		for (c in contacts) {
+			if(contacts[c].contacts && contacts[c].type == "Group") {
+				var toAdd = "<div id='node"+contacts[c].id+"'><p title = '"+pft+"["+c+"].contacts' onclick = 'javascript:toggleContacts("+pft+"["+c+"].contacts, \"node"+contacts[c].id+"\")'>"+contacts[c].name+"</p></div>";
+				context.innerHTML += toAdd;
+			} else {
+					context.innerHTML += "<div><span>"+contacts[c].name+"</span></div>";
+			}
+		}
+	} else { //collapse
+		while (context.lastChild != context.firstChild) {
+			context.removeChild(context.lastChild);
+		}
+	}
+}
+
+window.onload = function(e){ 
+	toggleContacts(contacts, 'ct');
+}
+
+</script>
+</head>
+<body>
+<div id="ct"><p>Contact Tree</p></div>
+</body
+</html>
